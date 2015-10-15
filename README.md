@@ -1,6 +1,7 @@
 # php-wifiscanner
 
 [![Build Status](https://travis-ci.org/firekraag/php-wifiscanner.svg?branch=master)](https://travis-ci.org/firekraag/php-wifiscanner)
+[![Code Climate](https://codeclimate.com/github/firekraag/php-wifiscanner/badges/gpa.svg)](https://codeclimate.com/github/firekraag/php-wifiscanner)
 
 A reusable, object-oriented PHP port of [cunchem/gtk-wifiscanner](https://github.com/cunchem/gtk-wifiscanner)
 
