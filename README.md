@@ -6,4 +6,5 @@ dependencies: `tshark`
 usage: `sudo php cli.php`
 
 The application will start recording probe requests.
-Hit `ENTER` to stop capturing and print the collected info.
+Hit `<ENTER>` to print the collected info.
+Hit `q<ENTER>` to exit the program.

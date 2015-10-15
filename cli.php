@@ -21,17 +21,18 @@ $process = $sniffer->sniffProbeRequests();
 while ($process->isRunning())
 {
     $input = $fileReader->read(STDIN); // Stop on ENTER
-    if ($input)
-        break;
+    if ($input) {
+        if ($input === "q")
+            break;
+        // TODO code rendering engine(s)
+        foreach($processor->getStations() as $station) {
+            foreach ($station->getProbedAps() as $ap) {
+                echo $station->getStationMac().' probed '.$ap."\n";
+            }
+        }
+    }
     usleep(NOTIFY_TIMER);
 }
 $process->stop();
 if (!$process->isSuccessful())
     throw new RuntimeException('Process failed: '.$process->getErrorOutput());
-
-// TODO code rendering engine(s)
-foreach($processor->getStations() as $station) {
-    foreach ($station->getProbedAps() as $ap) {
-        echo $station->getStationMac().' probed '.$ap."\n";
-    }
-}

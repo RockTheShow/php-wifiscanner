@@ -2,8 +2,9 @@
 
 namespace Network;
 
-use Process\ProcessFactory;
 use Event\EventSubscriberInterface;
+use Process\ProcessFactory;
+use Symfony\Component\Process\Process;
 
 class TsharkNetworkSniffer implements NetworkSnifferInterface
 {
@@ -35,9 +36,11 @@ class TsharkNetworkSniffer implements NetworkSnifferInterface
                        ' -E separator=";"';
         $process = $this->shell->createProcess($commandLine);
         $processor = $this->processor;
+        $globalOutout = '';
         $process->start(function($type, $output) use ($processor)
         {
-            if ($type === \Symfony\Component\Process\Process::OUT)
+            // Filter out errors and incomplete buffers
+            if ($type === Process::OUT && $output[strlen($output) - 1] === "\n")
                 $processor->notify($output);
         });
         return $process;
