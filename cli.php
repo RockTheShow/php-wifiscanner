@@ -21,9 +21,8 @@ $processor = new ProbeRequestProcessor;
 $sniffer = new TsharkNetworkSniffer($processFactory, $processor, WLAN_ADAPTER, USE_MONITOR);
 $process = $sniffer->sniffProbeRequests();
 
-while ($process->isRunning())
-{
-    $input = $fileReader->read(STDIN); // Stop on ENTER
+while ($process->isRunning()) {
+    $input = $fileReader->read(STDIN); // Show info on '<ENTER', Stop on 'q+<ENTER>'
     if ($input) {
         if ($input === "q")
             break;
