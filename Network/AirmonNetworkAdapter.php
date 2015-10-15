@@ -20,10 +20,14 @@ class AirmonNetworkAdapter implements NetworkAdapterInterface
 
     public function isMonitorEnabled()
     {
-        $commandLine = 'iwconfig '.$this->virtualAdapterName.' 2>&1 | grep -q "No such device"';
+        $commandLine = 'iwconfig '.$this->virtualAdapterName;
         $process = $this->factory->createProcess($commandLine);
         $process->run();
-        return $process->isSuccessful() && strlen($process->getOutput()) > 0;
+        if ($process->getStatus() !== 0 && $process->getStatus() !== 237) {
+            throw new \RuntimeException(
+                'Cannot query network adapter `'.$this->realAdapterName.'` status: '.$process->getErrorOutput());
+        }
+        return $process->getStatus() === 237;
     }
 
     public function enableMonitor()
