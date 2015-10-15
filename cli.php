@@ -1,8 +1,11 @@
 <?php
 
+use Network\AirmonNetworkAdapter;
+use Process\ProcessFactory;
+
 require_once(__DIR__.'/autoload.php');
 
-$shell = new \Shell\UnixShell;
-$output = $shell->exec('ls ~');
-echo $output;
-var_dump($output->getStatusCode());
+$processFactory = new ProcessFactory;
+$adapter = new AirmonNetworkAdapter($processFactory, 'wlan0', 'mon0');
+if (!$adapter->isMonitorEnabled())
+    $adapter->enableMonitor();
