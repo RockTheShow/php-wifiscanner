@@ -27,7 +27,9 @@ while ($process->isRunning()) {
         if ($input === "q")
             break;
         // TODO code rendering engine(s)
-        foreach($processor->getStations() as $station) {
+        if (count($processor->getStations()) === 0)
+            echo 'No probe requests captured yet.'."\n";
+        foreach ($processor->getStations() as $station) {
             foreach ($station->getProbedAps() as $ap) {
                 echo $station->getStationMac().' probed '.$ap."\n";
             }
