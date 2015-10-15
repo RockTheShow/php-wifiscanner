@@ -7,10 +7,13 @@ use Processor\ProbeRequestProcessor;
 
 require_once(__DIR__.'/autoload.php');
 
-const WLAN_ADAPTER = 'en1';
+const WLAN_ADAPTER = 'en2';
 const NOTIFY_TIMER = 20000; // usecs
 const USE_SUDO = false;
 const USE_MONITOR = true;
+
+if (!ini_get('date.timezone'))
+    ini_set('date.timezone', 'Europe/Paris');
 
 $fileReader = new AsynchronousInput;
 $processFactory = new ProcessFactory(USE_SUDO);
