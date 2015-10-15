@@ -6,14 +6,13 @@ A reusable, object-oriented PHP port of [cunchem/gtk-wifiscanner](https://github
 
 ### Preparation
 
-External, binary dependencies: `tshark`.
+This project uses the following binary dependencies: `tshark`.
 Make sure to have them installed on your system.
 
-Fetch the project dependencies by running:
+Clone the project **and its deps** (note the *--recursive* option):
 
 ```shell
-git submodule init
-git submodule update
+git clone https://github.com/firekraag/php-wifiscanner --recursive
 ```
 
 Edit cli.php and set the constants to your system values.
