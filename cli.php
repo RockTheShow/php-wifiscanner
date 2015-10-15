@@ -1,11 +1,35 @@
 <?php
 
-use Network\AirmonNetworkAdapter;
+use Io\AsynchronousInput;
+use Network\TsharkNetworkSniffer;
 use Process\ProcessFactory;
+use Processor\ProbeRequestProcessor;
 
 require_once(__DIR__.'/autoload.php');
 
+const WLAN_ADAPTER = 'en1';
+const NOTIFY_TIMER = 20000; // usecs
+
+$fileReader = new AsynchronousInput;
 $processFactory = new ProcessFactory;
-$adapter = new AirmonNetworkAdapter($processFactory, 'wlan0', 'mon0');
-if (!$adapter->isMonitorEnabled())
-    $adapter->enableMonitor();
+$processor = new ProbeRequestProcessor;
+$sniffer = new TsharkNetworkSniffer($processFactory, $processor, WLAN_ADAPTER, true);
+$process = $sniffer->sniffProbeRequests();
+
+while ($process->isRunning())
+{
+    $input = $fileReader->read(STDIN); // Stop on ENTER
+    if ($input)
+        break;
+    usleep(NOTIFY_TIMER);
+}
+$process->stop();
+if (!$process->isSuccessful())
+    throw new RuntimeException('Process failed: '.$process->getErrorOutput());
+
+// TODO code rendering engine(s)
+foreach($processor->getStations() as $station) {
+    foreach ($station->getProbedAps() as $ap) {
+        echo $station->getStationMac().' probed '.$ap."\n";
+    }
+}

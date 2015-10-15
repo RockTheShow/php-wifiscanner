@@ -7,13 +7,13 @@ use RuntimeException;
 
 class AirmonNetworkAdapter implements NetworkAdapterInterface
 {
-    protected $factory;
+    protected $shell;
     protected $realAdapterName;
     protected $virtualAdapterName;
 
     public function __construct(ProcessFactory $factory, $realAdapterName, $virtualAdapterName)
     {
-        $this->factory = $factory;
+        $this->shell = $factory;
         $this->realAdapterName = $realAdapterName;
         $this->virtualAdapterName = $virtualAdapterName;
     }
@@ -21,7 +21,7 @@ class AirmonNetworkAdapter implements NetworkAdapterInterface
     public function isMonitorEnabled()
     {
         $commandLine = 'iwconfig '.$this->virtualAdapterName;
-        $process = $this->factory->createProcess($commandLine);
+        $process = $this->shell->createProcess($commandLine);
         $process->run();
         if ($process->getStatus() !== 0 && $process->getStatus() !== 237) {
             throw new \RuntimeException(
@@ -33,7 +33,7 @@ class AirmonNetworkAdapter implements NetworkAdapterInterface
     public function enableMonitor()
     {
         $commandLine = 'airmon-ng start '.$this->realAdapterName;
-        $process = $this->factory->createProcess($commandLine);
+        $process = $this->shell->createProcess($commandLine);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new RuntimeException(
@@ -42,5 +42,10 @@ class AirmonNetworkAdapter implements NetworkAdapterInterface
                 $process->getErrorOutput()
             );
         }
+    }
+    
+    public function getName()
+    {
+        return $this->virtualAdapterName;
     }
 }
