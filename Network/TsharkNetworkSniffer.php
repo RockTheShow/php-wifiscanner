@@ -28,7 +28,7 @@ class TsharkNetworkSniffer implements NetworkSnifferInterface
     
     public function sniffProbeRequests()
     {
-        $commandLine = '/usr/local/bin/tshark'.
+        $commandLine = 'tshark'.
                        ($this->monitorMode ? ' -I' : '').
                        ' -l -i '.$this->adapter.
                        ' -Y "wlan.fc.pwrmgt == 1 || wlan.fc.type_subtype == 4"'.
