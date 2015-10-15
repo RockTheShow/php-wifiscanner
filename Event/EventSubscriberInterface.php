@@ -1,8 +1,8 @@
 <?php
 
-namespace Processor;
+namespace Event;
 
-interface ProcessorInterface
+interface EventSubscriberInterface
 {
     public function notify($data);
 }

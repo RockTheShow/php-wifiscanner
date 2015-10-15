@@ -3,8 +3,9 @@
 namespace Processor;
 
 use DateTime;
+use Event\EventSubscriberInterface;
 
-class ProbeRequestProcessor implements ProcessorInterface
+class ProbeRequestProcessor implements EventSubscriberInterface
 {
     /**
      * @var StationInfo[] 

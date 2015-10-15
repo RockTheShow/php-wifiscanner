@@ -9,11 +9,12 @@ require_once(__DIR__.'/autoload.php');
 
 const WLAN_ADAPTER = 'en1';
 const NOTIFY_TIMER = 20000; // usecs
+const USE_SUDO = false;
 
 $fileReader = new AsynchronousInput;
 $processFactory = new ProcessFactory;
 $processor = new ProbeRequestProcessor;
-$sniffer = new TsharkNetworkSniffer($processFactory, $processor, WLAN_ADAPTER, true);
+$sniffer = new TsharkNetworkSniffer($processFactory, $processor, WLAN_ADAPTER, USE_SUDO);
 $process = $sniffer->sniffProbeRequests();
 
 while ($process->isRunning())

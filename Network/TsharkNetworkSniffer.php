@@ -3,7 +3,7 @@
 namespace Network;
 
 use Process\ProcessFactory;
-use Processor\ProcessorInterface;
+use Event\EventSubscriberInterface;
 
 class TsharkNetworkSniffer implements NetworkSnifferInterface
 {
@@ -14,7 +14,7 @@ class TsharkNetworkSniffer implements NetworkSnifferInterface
     
     public function __construct(
         ProcessFactory $factory,
-        ProcessorInterface $processor,
+        EventSubscriberInterface $processor,
         $adapter,
         $monitorMode = false
     )
