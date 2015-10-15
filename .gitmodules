@@ -1,0 +1,3 @@
+[submodule "Symfony/Component/Process"]
+	path = Symfony/Component/Process
+	url = https://github.com/symfony/process
