@@ -1,7 +1,14 @@
 # php-wifiscanner
 A reusable, object-oriented PHP port of [cunchem/gtk-wifiscanner](https://github.com/cunchem/gtk-wifiscanner)
 
-dependencies: `tshark`
+External binary dependencies: `tshark`
+
+Fetch the external dependencies by running:
+
+```shell
+git submodule init
+git submodule update
+```
 
 Edit cli.php and set the constants to your system values.
 - `WLAN_ADAPTER`: your network interface ID
