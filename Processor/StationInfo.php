@@ -14,7 +14,8 @@ class StationInfo
     public function __construct($stationMac = null, $rssi = null)
     {
         $this->stationMac = $stationMac;
-        $this->rssi = $rssi;
+        $this->lastSeen = new DateTime('NOW');
+        $this->highestRssi = $rssi;
         $this->probedAps = [];
     }
     
@@ -53,7 +54,7 @@ class StationInfo
     public function setCurrentRssi($rssi)
     {
         $rssi = intval($rssi);
-        if ($this->highestRssi < $rssi)
+        if ($this->highestRssi === null || $this->highestRssi < $rssi)
             $this->highestRssi = $rssi;
         return $this;
     }
@@ -61,5 +62,6 @@ class StationInfo
     public function addProbedAp($ap)
     {
         $this->probedAps[$ap] = $ap;
+        return $this;
     }
 }

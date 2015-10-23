@@ -15,7 +15,7 @@ class SimpleConsoleRenderer implements RendererInterface
     protected $closeRequested;
     protected $renderRequested;
     
-    public function processInput()
+    protected function processInput()
     {
         if ($this->closeRequested)
             return;
