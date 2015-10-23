@@ -14,7 +14,7 @@ class AsynchronousInput implements InputInterface
             throw new RuntimeException('Cannot read fd `'.$fd.'` asynchronously');
         if ($result === 0)
             return false;
-        $data = stream_get_line($fd, 1);
+        $data = stream_get_line($fd, 80, PHP_EOL);
         return $data;
     }
 }

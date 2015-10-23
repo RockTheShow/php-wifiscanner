@@ -40,7 +40,7 @@ class TsharkNetworkSniffer implements NetworkSnifferInterface
         $process->start(function($type, $output) use ($processor)
         {
             // Filter out errors and incomplete buffers
-            if ($type === Process::OUT && $output[strlen($output) - 1] === "\n")
+            if ($type === Process::OUT && $output[strlen($output) - 1] === PHP_EOL)
                 $processor->notify($output);
         });
         return $process;
