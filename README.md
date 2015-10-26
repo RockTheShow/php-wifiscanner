@@ -14,11 +14,10 @@ Make sure to have them installed on your system.
 Clone the project **and its deps** (note the *--recursive* option):
 
 ```shell
-git clone https://github.com/firekraag/php-wifiscanner --recursive
+git clone --recursive https://github.com/firekraag/php-wifiscanner
 ```
 
-Edit cli.php and set the constants to your system values.
-- `WLAN_ADAPTER`: your network interface ID.
+Optionally, edit cli.php and set the constants to your desired values.
 - `NOTIFY_TIMER`: the rate at which new probe requests are parsed. It should be safe to leave it to the default.
 - `USE_SUDO` (experimental): whether to `sudo` the underlying commands. If set to `true` you do not need to run `cli.php` as root.
 - `USE_MONITOR`: whether to capture WLAN packets in Monitor mode.
@@ -31,7 +30,7 @@ Options:
 - `--targeted-only`: if set, wildcard probe requests will be ignored.
 
 Arguments:
-- `IFACE`: your wireless interface name (e.g. wlan0, en0...).
+- `IFACE`: your wireless interface name (*e.g.* wlan0, en0...).
 
 The application will start recording probe requests.
 
