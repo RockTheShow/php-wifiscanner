@@ -6,10 +6,30 @@ use DateTime;
 
 class StationInfo
 {
+    /**
+     * @var string 
+     */
     protected $stationMac;
+    
+    /**
+     * @var DateTime 
+     */
     protected $lastSeen;
+    
+    /**
+     * @var int 
+     */
     protected $highestRssi;
+    
+    /**
+     * @var ApInfo 
+     */
     protected $probedAps;
+    
+    /**
+     * @var bool
+     */
+    protected $sentUntargetedProbe;
     
     public function __construct($stationMac = null, $rssi = null)
     {
@@ -17,6 +37,7 @@ class StationInfo
         $this->lastSeen = new DateTime('NOW');
         $this->highestRssi = $rssi;
         $this->probedAps = [];
+        $this->sentUntargetedProbe = false;
     }
     
     public function getStationMac()
@@ -37,6 +58,11 @@ class StationInfo
     public function getProbedAps()
     {
         return $this->probedAps;
+    }
+    
+    public function sentUntargetedProbe()
+    {
+        return $this->sentUntargetedProbe;
     }
 
     public function setStationMac($stationMac)
@@ -59,9 +85,15 @@ class StationInfo
         return $this;
     }
 
-    public function addProbedAp($ap)
+    public function addProbedAp(ApInfo $ap)
     {
-        $this->probedAps[$ap] = $ap;
+        $this->probedAps[$ap->getEssid()] = $ap;
+        return $this;
+    }
+    
+    public function setSentUntargetedProbe($setSentUntargetedProbe)
+    {
+        $this->sentUntargetedProbe = $setSentUntargetedProbe;
         return $this;
     }
 }

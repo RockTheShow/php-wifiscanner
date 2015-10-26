@@ -1,14 +1,13 @@
 <?php
 
+use Config\ArgvParser;
 use Io\AsynchronousInput;
 use Network\TsharkNetworkSniffer;
 use Process\ProcessFactory;
 use Processor\ProbeRequestProcessor;
-use Renderer\SimpleConsoleRenderer;
 
 require_once(__DIR__.'/autoload.php');
 
-const WLAN_ADAPTER = 'en1';
 const NOTIFY_TIMER = 20000; // usecs
 const USE_SUDO = false;
 const USE_MONITOR = true;
@@ -23,11 +22,13 @@ if (!ini_get('date.timezone')) {
     ini_set('date.timezone', 'Europe/Paris');
 }
 
+$config = new ArgvParser($_SERVER['argv']);
 $processFactory = new ProcessFactory(USE_SUDO);
 $fileReader = new AsynchronousInput;
-$renderer = new SimpleConsoleRenderer($fileReader);
+$rendererClass = $config->getRendererClass();
+$renderer = new $rendererClass($fileReader, $config->getShowOnlyTargetedProbes());
 $processor = new ProbeRequestProcessor($renderer);
-$sniffer = new TsharkNetworkSniffer($processFactory, $processor, WLAN_ADAPTER, USE_MONITOR);
+$sniffer = new TsharkNetworkSniffer($processFactory, $processor, $config->getNetworkInterfaceName(), USE_MONITOR);
 
 $process = $sniffer->sniffProbeRequests();
 while ($process->isRunning()) {

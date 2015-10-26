@@ -6,7 +6,7 @@ use DateTime;
 use Event\EventSubscriberInterface;
 
 class ProbeRequestProcessor implements EventSubscriberInterface
-{
+{    
     /**
      * @var EventSubscriberInterface 
      */
@@ -44,10 +44,12 @@ class ProbeRequestProcessor implements EventSubscriberInterface
             $epochSeconds = current(explode('.', $tokens[0]));
             $station->setLastSeen(DateTime::createFromFormat('U', $epochSeconds));
             
-            // TODO struct with bssids + essid
-            if (!$tokens[4] || empty($tokens[4]))
-                return;
-            $station->addProbedAp($tokens[4]);
+            if (isset($tokens[4]) && !empty($tokens[4]) && preg_match('/^([\x09\x0A\x0D\x20-\x7E])*$/', $tokens[4]))
+                $station->addProbedAp(new ApInfo($tokens[4]));
+            elseif (isset($tokens[4]) && !empty($tokens[4]))
+                $station->addProbedAp(new ApInfo ('<corrupted or non-printable>'));
+            else
+                $station->setSentUntargetedProbe(true);
             
             $this->renderer->notify($this->stations);
         }
