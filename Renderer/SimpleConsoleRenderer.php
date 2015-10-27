@@ -2,14 +2,16 @@
 
 namespace Renderer;
 
+use Exception;
 use Io\InputInterface;
 
 class SimpleConsoleRenderer implements RendererInterface
 {
-    static $NO_PROBE_CAPTURED = 'No probe requests to show yet.';
-    static $STA_CAPTURED = 'STA mac=%s, rssi=%s probed:';
-    static $UNTARGETED_PROBE_CAPTURED = ' - Any AP in its range (untargeted probe)';
-    static $TARGETED_PROBE_CAPTURED = ' - AP eSSID=%s';
+    const NO_PROB_CAP = 'No probe requests to show yet.';
+    const STA_CAP = 'STA mac=%s, rssi=%s probed:';
+    const UNTARG_PROB_CAP = ' - Any AP in its range (untargeted probe)';
+    const TARG_PROB_CAP = ' - AP eSSID=%s';
+    const ERROR_MSG = 'E: %s (%s)';
     
     /**
      * @var InputInterface 
@@ -17,7 +19,7 @@ class SimpleConsoleRenderer implements RendererInterface
     protected $fileReader;
     
     protected $modelView;
-    protected $showOnlyTargetedProbes;
+    protected $onlyTargetedProbes;
     protected $closeRequested;
     protected $renderRequested;
     
@@ -30,11 +32,11 @@ class SimpleConsoleRenderer implements RendererInterface
         $this->renderRequested = ($input === '');
     }
     
-    public function __construct(InputInterface $fileReader, $showOnlyTargetedProbes = false)
+    public function __construct(InputInterface $fileReader, $onlyTargetedProbes = false)
     {
         $this->fileReader = $fileReader;
         $this->modelView = [];
-        $this->showOnlyTargetedProbes = $showOnlyTargetedProbes;
+        $this->onlyTargetedProbes = $onlyTargetedProbes;
         $this->closeRequested = false;
         $this->renderRequested = false;
     }
@@ -52,20 +54,21 @@ class SimpleConsoleRenderer implements RendererInterface
         
         $stationsWereShown = false;
         foreach ($this->modelView as $station) {
-            if (count($station->getProbedAps()) === 0 && // Didn't target any AP
-                (!$station->sentUntargetedProbe() || $this->showOnlyTargetedProbes))
+            // If STA didn't target any AP -AND- (it didn't send wildcard probes -OR- we filter out wildcard probes)
+            if (count($station->getProbedAps()) === 0 &&
+                (!$station->sentUntargetedProbe() || $this->onlyTargetedProbes))
                 continue;
             
-            echo sprintf(static::$STA_CAPTURED.PHP_EOL, $station->getStationMac(), $station->getHighestRssi());
-            if ($station->sentUntargetedProbe() && !$this->showOnlyTargetedProbes)
-                echo static::$UNTARGETED_PROBE_CAPTURED.PHP_EOL;
+            echo sprintf(static::STA_CAP.PHP_EOL, $station->getStationMac(), $station->getHighestRssi());
+            if ($station->sentUntargetedProbe() && !$this->onlyTargetedProbes)
+                echo static::UNTARG_PROB_CAP.PHP_EOL;
             foreach ($station->getProbedAps() as $ap)
-                echo sprintf(static::$TARGETED_PROBE_CAPTURED.PHP_EOL, $ap->getEssid());
+                echo sprintf(static::TARG_PROB_CAP.PHP_EOL, $ap->getEssid());
             $stationsWereShown = true;
         }
         
         if (!$stationsWereShown)
-            echo static::$NO_PROBE_CAPTURED.PHP_EOL;
+            echo static::NO_PROB_CAP.PHP_EOL;
         
         $this->renderRequested = false;
     }
@@ -75,8 +78,8 @@ class SimpleConsoleRenderer implements RendererInterface
         return $this->closeRequested;
     }
     
-    public function setShowOnlyTargetedProbes($showOnlyTargetedProbes)
+    public function spawnError(Exception $e)
     {
-        $this->showOnlyTargetedProbes = $showOnlyTargetedProbes;
+        fprintf(STDERR, static::ERROR_MSG.PHP_EOL, $e->getMessage(), get_class($e));
     }
 }

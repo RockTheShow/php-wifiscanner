@@ -31,8 +31,7 @@ class TsharkNetworkSniffer implements NetworkSnifferInterface
         $commandLine = 'tshark'.
                        ($this->monitorMode ? ' -I' : '').
                        ' -l -i '.$this->adapter.
-//                       ' -Y "wlan.fc.pwrmgt == 1 || wlan.fc.type_subtype == 4"'.
-                        ' -Y "wlan.fc.type_subtype == 4 && wlan.fcs_good"'.
+                        ' -Y "(wlan.fc.type_subtype == 4 || wlan.fc.pwrmgt == 1) && wlan.fcs_good == true"'.
                        ' -T fields -e frame.time_epoch -e wlan.sa -e wlan.da -e radiotap.dbm_antsignal -e wlan_mgt.ssid'.
                        ' -E separator=";"';
         

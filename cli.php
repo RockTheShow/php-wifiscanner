@@ -12,6 +12,7 @@ const NOTIFY_TIMER = 20000; // usecs
 const USE_SUDO = false;
 const USE_MONITOR = true;
 
+// this check will be removed soon
 if (!ini_get('date.timezone')) {
     fprintf(
         STDERR,
@@ -27,6 +28,7 @@ $processFactory = new ProcessFactory(USE_SUDO);
 $fileReader = new AsynchronousInput;
 $rendererClass = $config->getRendererClass();
 $renderer = new $rendererClass($fileReader, $config->getShowOnlyTargetedProbes());
+set_exception_handler([$renderer, 'spawnError']);
 $processor = new ProbeRequestProcessor($renderer);
 $sniffer = new TsharkNetworkSniffer($processFactory, $processor, $config->getNetworkInterfaceName(), USE_MONITOR);
 

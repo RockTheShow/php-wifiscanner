@@ -1,6 +1,6 @@
 <?php
 
-namespace Processor;
+namespace Network;
 
 use DateTime;
 
@@ -22,7 +22,7 @@ class StationInfo
     protected $highestRssi;
     
     /**
-     * @var ApInfo 
+     * @var ProbeInfo 
      */
     protected $probedAps;
     
@@ -85,7 +85,7 @@ class StationInfo
         return $this;
     }
 
-    public function addProbedAp(ApInfo $ap)
+    public function addProbedAp(ProbeInfo $ap)
     {
         $this->probedAps[$ap->getEssid()] = $ap;
         return $this;

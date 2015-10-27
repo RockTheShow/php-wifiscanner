@@ -3,6 +3,7 @@
 namespace Renderer;
 
 use Event\EventSubscriberInterface;
+use Exception;
 
 interface RendererInterface extends EventSubscriberInterface
 {
@@ -12,4 +13,6 @@ interface RendererInterface extends EventSubscriberInterface
     function closeRequested();
     
     function render();
+    
+    function spawnError(Exception $e);
 }

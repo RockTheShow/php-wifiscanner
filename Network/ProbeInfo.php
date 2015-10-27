@@ -1,8 +1,8 @@
 <?php
 
-namespace Processor;
+namespace Network;
 
-class ApInfo
+class ProbeInfo
 {
     protected $essid;
     

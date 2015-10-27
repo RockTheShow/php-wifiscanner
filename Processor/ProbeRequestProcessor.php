@@ -4,6 +4,9 @@ namespace Processor;
 
 use DateTime;
 use Event\EventSubscriberInterface;
+use Network\CorruptedProbeInfo;
+use Network\ProbeInfo;
+use Network\StationInfo;
 
 class ProbeRequestProcessor implements EventSubscriberInterface
 {    
@@ -45,9 +48,9 @@ class ProbeRequestProcessor implements EventSubscriberInterface
             $station->setLastSeen(DateTime::createFromFormat('U', $epochSeconds));
             
             if (isset($tokens[4]) && !empty($tokens[4]) && preg_match('/^([\x09\x0A\x0D\x20-\x7E])*$/', $tokens[4]))
-                $station->addProbedAp(new ApInfo($tokens[4]));
+                $station->addProbedAp(new ProbeInfo($tokens[4]));
             elseif (isset($tokens[4]) && !empty($tokens[4]))
-                $station->addProbedAp(new ApInfo ('<corrupted or non-printable>'));
+                $station->addProbedAp(new CorruptedProbeInfo($tokens[4]));
             else
                 $station->setSentUntargetedProbe(true);
             

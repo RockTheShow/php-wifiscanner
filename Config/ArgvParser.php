@@ -15,9 +15,11 @@ class ArgvParser implements ConfigurationParserInterface
 
     public function getNetworkInterfaceName()
     {
-        $arguments = array_filter($this->argv, function($value) {
-            return strpos($value, '--') !== 0;
-        });
+        // Filter out options from argv array
+        $arguments = array_values(array_filter($this->argv, function($value) {
+            return strncmp($value, '--', 2) !== 0;
+        }));
+        // First and only argument (to date) is iface
         $iface = isset($arguments[1]) ? $arguments[1] : null;
         if (!$iface)
             throw new InvalidArgumentException('wireless interface name not provided');
