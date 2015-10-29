@@ -4,6 +4,7 @@ namespace Renderer;
 
 use Exception;
 use Io\InputInterface;
+use Network\StationInfo;
 
 class SimpleConsoleRenderer implements RendererInterface
 {
@@ -43,7 +44,16 @@ class SimpleConsoleRenderer implements RendererInterface
     
     public function notify($data)
     {
-        $this->modelView = $data;
+        usort($data, function(StationInfo $sta1, StationInfo $sta2)
+        {
+            // WTB Spaceship Operator :[
+            if ($sta1->getHighestRssi() < $sta2->getHighestRssi())
+                return -1;
+            if ($sta1->getHighestRssi() > $sta2->getHighestRssi())
+                return 1;
+            return 0;
+        });
+        $this->modelView = array_reverse($data);
     }
     
     public function render()

@@ -37,7 +37,6 @@ class TsharkNetworkSniffer implements NetworkSnifferInterface
         
         $process = $this->shell->createProcess($commandLine);
         $processor = $this->processor;
-        $globalOutout = '';
         $process->start(function($type, $output) use ($processor)
         {
             // Filter out errors and incomplete buffers
