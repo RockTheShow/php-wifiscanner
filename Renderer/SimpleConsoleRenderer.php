@@ -40,6 +40,8 @@ class SimpleConsoleRenderer implements RendererInterface
         $this->onlyTargetedProbes = $onlyTargetedProbes;
         $this->closeRequested = false;
         $this->renderRequested = false;
+
+        fprintf(STDERR, 'Starting. Press <ENTER> to show collected info, q<ENTER> to quit.'.PHP_EOL);
     }
     
     public function notify($data)

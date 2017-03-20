@@ -24,6 +24,18 @@ if (!ini_get('date.timezone')) {
 }
 
 $config = new ArgvParser($_SERVER['argv']);
+
+if ($config->getHelpRequested())
+{
+    fprintf(
+        STDERR,
+        'usage: '.$_SERVER['argv'][0].' [--color] [--targeted-only] IFACE'.PHP_EOL.
+        '    --color'."\t\t".' if set, output will be ANSI-colored.'.PHP_EOL.
+        '    --targeted-only'."\t".' if set, wildcard probe requests will be ignored.'.PHP_EOL
+    );
+    exit();
+}
+
 $processFactory = new ProcessFactory(USE_SUDO);
 $fileReader = new AsynchronousInput;
 $rendererClass = $config->getRendererClass();

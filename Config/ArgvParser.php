@@ -13,6 +13,16 @@ class ArgvParser implements ConfigurationParserInterface
         $this->argv = $argv;
     }
 
+    public function getHelpRequested()
+    {
+        return in_array('--help', $this->argv);
+    }
+
+    public function getVersionRequested()
+    {
+        return in_array('--version', $this->argv);
+    }
+
     public function getNetworkInterfaceName()
     {
         // Filter out options from argv array
