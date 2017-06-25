@@ -8,7 +8,7 @@ A reusable, object-oriented PHP port of [cunchem/gtk-wifiscanner](https://github
 
 ### Context
 
-When trying to establish a connection, your Wi-Fi-enabled device send probes to figure out whether one of your usual, remembered networks is in range. These probes can be eavesdropped on. Since they contain your MAC address (unique identifier of your device) and might contain such usual networks names (ESSIDs) as well, they can effectively leak your privacy by disclosing locations you traveled to (e.g. This guy went to ACME-Airport-Wifi). Research showed that tight social links could be inferred from relatively small Wi-Fi data samples.
+When trying to establish a connection, your Wi-Fi-enabled device sends probes to figure out whether one of your usual, remembered networks is in range. These probes can be eavesdropped on. Since they contain your MAC address (unique identifier of your device) and might contain such usual networks names (ESSIDs) as well, they can effectively leak your privacy by disclosing locations you traveled to (e.g. This guy went to ACME-Airport-Wifi). Research showed that tight social links could be inferred from relatively small Wi-Fi data samples.
 
 This program is the eavesdropper: it uses your Wi-Fi interface to sniff the surrounding traffic and report info gathered from picked up probes. Use it responsibly, it is meant as a demo of the privacy concerns active probing raises.
 
